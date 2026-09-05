@@ -10,5 +10,5 @@ resource "azurerm_federated_identity_credential" "github_actions" {
 
   issuer = "https://token.actions.githubusercontent.com"
 
-  subject = "repo:${var.github_org}/${var.github_repo}:ref:refs/heads/main"
+  subject = "repo:Davintus@91970837/azure-devsecops-platform-infra@1348522429:ref:refs/heads/main"
 }
