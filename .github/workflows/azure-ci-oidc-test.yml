@@ -25,12 +25,12 @@ jobs:
           Write-Host "Authenticated Azure account:"
           az account show --output json
 
-      - name: Verify ACR access
+      - name: Verify ACR authentication
         shell: pwsh
         run: |
-          Write-Host "Checking ACR access..."
+          Write-Host "Authenticating to Azure Container Registry..."
 
-          az acr show `
-            --name "${{ vars.ACR_NAME }}" `
-            --query "{name:name, loginServer:loginServer, adminEnabled:adminUserEnabled}" `
-            --output json
+          az acr login `
+            --name "${{ vars.ACR_NAME }}"
+
+          Write-Host "ACR authentication succeeded."
