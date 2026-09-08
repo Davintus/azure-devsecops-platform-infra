@@ -1,0 +1,36 @@
+name: Azure CI OIDC Authentication Test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  verify-azure-oidc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Azure login with OIDC
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CI_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Verify Azure identity
+        shell: pwsh
+        run: |
+          Write-Host "Authenticated Azure account:"
+          az account show --output json
+
+      - name: Verify ACR access
+        shell: pwsh
+        run: |
+          Write-Host "Checking ACR access..."
+
+          az acr show `
+            --name "${{ vars.ACR_NAME }}" `
+            --query "{name:name, loginServer:loginServer, adminEnabled:adminUserEnabled}" `
+            --output json
